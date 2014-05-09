@@ -57,6 +57,7 @@ public class newQueens
     }
     
     /* below deals with printing the solutions */
+    
     // printArray prints the array.
     private static void printArray (int [] a, int i)
     {
