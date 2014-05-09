@@ -1,0 +1,88 @@
+import java.util.Scanner;
+/**
+ * Prints all the solutions for the Queens Problem.
+ * Receives an integer n, and prints the amount of solutions for the board n x n.
+ * Made by Tzook Shaked :)
+ */
+public class newQueens
+{    
+    public static void main (String [] args)
+    {           
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Please enter the board size");
+        int n = scan.nextInt();
+        System.out.println("In total : " + Queens(n) + " results");
+    }
+    
+    /**
+     * Prints the solutions for the Queens Problem.
+     * @param n The size of the board
+     * @return The amount of solutions
+     */
+    public static int Queens(int n)
+    {
+        System.out.println("Here are the results for size " + n + ".");
+        int [] a = new int [n]; // the new board
+        return Queens(a, 0, 0);
+    }
+    
+    // overload
+    private static int Queens(int [] a, int loc, int count)
+    {
+        if (loc == a.length) { // base case, means success
+            System.out.println("    " + printStars("",a.length + 2, 0, "* "));
+            printArray(a, 0);
+            return 1;
+        }
+        if (a[loc] == a.length) // out of boundries
+            return a[loc] = 0;
+        if (!isValid(a, 0, loc)) { // bad placement, advance by one
+            a[loc]++;
+            return Queens(a, loc, 0);
+        }
+        count += Queens(a, loc + 1, 0); // checks to the right in the board
+        a[loc]++;
+        return count + Queens(a, loc, 0); // checks to the bottom in the board
+    }
+    
+    // isValid checks the validation of the placement of the Queens in the board, up to the argument 'to'.
+    private static boolean isValid(int [] a, int i, int to)
+    {
+        if (i == to) // base caseound
+            return true;
+        if (a[i] == a[to] // in the same line
+             || Math.abs (a[to] - a[i]) == to - i ) // in the same diagonal
+            return false;
+        return isValid (a, i+1, to);
+    }
+    
+    /* below deals with printing the solutions */
+    // printArray prints the array.
+    private static void printArray (int [] a, int i)
+    {
+        if (i == a.length) { // base case, after last line
+            System.out.println("    " + printStars("", a.length + 2, 0, "* "));
+            System.out.println(printStars("", a.length + 6, 0, "~~"));            
+            return;
+        }
+        System.out.println("    * " + printNum(a[i], 0, "", a.length) + "*"); // prints one line representing a Queen
+        printArray(a, i+1);
+    }
+    
+    // printNum returns the specific num in a line of "-" and "Q" in a string
+    private static String printNum(int a, int col, String s, int length)
+    {
+        if (col == length)
+            return s;
+        s += (col == a ? "Q " : "- "); // only one queen per line
+        return printNum(a, col+1, s, length);
+    }
+    
+    // prints stars for the length of the array + 2
+    private static String printStars(String s, int length, int i, String x)
+    {
+        if (i == length) 
+            return s;
+        return printStars(s + x, length, i+1, x);
+    }    
+}
